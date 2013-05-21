@@ -59,14 +59,14 @@ namespace GameOfLifeW8
             {
                 if (cell.alive)
                 {
-                    if (!game.CellTab[cell.row, cell.column])
+                    if (!game.GameOfLifeGrid[cell.row, cell.column])
                     {
                         cell.Die();
                     }
                 }
                 else
                 {
-                    if (game.CellTab[cell.row, cell.column])
+                    if (game.GameOfLifeGrid[cell.row, cell.column])
                     {
                         cell.Live();
                     }

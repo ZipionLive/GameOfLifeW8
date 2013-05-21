@@ -30,6 +30,7 @@
                     	<ColorAnimation Duration="0" To="#FFCC0033" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="CellBody" d:IsOptimized="True"/>
                     	<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="CellShadow" d:IsOptimized="True"/>
                     	<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="CellBody" d:IsOptimized="True"/>
+
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Dead">
@@ -44,6 +45,7 @@
                     	</ObjectAnimationUsingKeyFrames>
                     	<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="CellBody" d:IsOptimized="True"/>
                     	<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="CellShadow" d:IsOptimized="True"/>
+                        
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>

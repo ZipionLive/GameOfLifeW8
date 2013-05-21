@@ -14,27 +14,28 @@ namespace GameOfLifeW8
         public event DelegateGenerationComputed GenerationComputed;
         #endregion
 
-        #region Attributes
+        #region Fields
         //private readonly int tabLength { get; }
         //private readonly int tabHeight { get; }
         //private static volatile Game instance;
         //private static object syncRoot = new Object();
-        private bool[,] _cellTab;
+        private bool[,] _gameOfLifeGrid;
+        private bool[,] _nextGameOfLifeGrid;
         #endregion
 
         #region Properties
         // Tableau des cellules
-        public bool[,] CellTab
+        public bool[,] GameOfLifeGrid
         {
             get
             {
-                return _cellTab;
+                return _gameOfLifeGrid;
             }
             private set
             {
-                if (_cellTab != value)
+                if (_gameOfLifeGrid != value)
                 {
-                    _cellTab = value;
+                    _gameOfLifeGrid = value;
                     RaisePropertyChanged("CellTab");
                 }
             }
@@ -50,7 +51,7 @@ namespace GameOfLifeW8
         {
             get
             {
-                return CellTab.GetLength(0);
+                return GameOfLifeGrid.GetLength(0);
             }
         }
 
@@ -61,7 +62,7 @@ namespace GameOfLifeW8
         {
             get
             {
-                return CellTab.GetLength(1);
+                return GameOfLifeGrid.GetLength(1);
             }
         }
         #endregion
@@ -70,33 +71,39 @@ namespace GameOfLifeW8
         public Game(int tabLength, int tabHeight)
         {
             // Instantiation du tableau selon les coordonnées demandées
-            CellTab = new bool[tabLength, tabHeight];
-            InitializeToFalse(CellTab);
-            InitializeGlider(CellTab);
+            GameOfLifeGrid = new bool[tabLength, tabHeight];
+            _nextGameOfLifeGrid = new bool[tabLength, tabHeight];
+
+            InitializeToFalse(GameOfLifeGrid);
+            InitializeToFalse(_nextGameOfLifeGrid);
+
+            InitializeGlider(GameOfLifeGrid);
+            RaisePropertyChanged("CellTab");
+
             if (GenerationComputed != null)
             {
                 GenerationComputed();
             }
         }
 
-        private void InitializeToFalse(bool[,] CellTab)
+        private void InitializeToFalse(bool[,] GameOfLifeGrid)
         {
             for (int row = 0; row < RowLength; row++)
             {
                 for (int column = 0; column < ColumnLength; column++)
                 {
-                    CellTab[row, column] = false;
+                    GameOfLifeGrid[row, column] = false;
                 }
             }
         }
 
-        private void InitializeGlider(bool[,] CellTab)
+        private void InitializeGlider(bool[,] GameOfLifeGrid)
         {
-            CellTab[0, 1] = true;
-            CellTab[1, 2] = true;
-            CellTab[2, 0] = true;
-            CellTab[2, 1] = true;
-            CellTab[2, 2] = true;
+            GameOfLifeGrid[0, 1] = true;
+            GameOfLifeGrid[1, 2] = true;
+            GameOfLifeGrid[2, 0] = true;
+            GameOfLifeGrid[2, 1] = true;
+            GameOfLifeGrid[2, 2] = true;
         }
         #endregion
 
@@ -118,10 +125,14 @@ namespace GameOfLifeW8
         /// <summary>
         /// Starts the logic business
         /// </summary>
-        public async void Start()
+        public void Start()
         {
             this.IsRunning = true;
+            Run();
+        }
 
+        public async void Run()
+        {
             while (IsRunning)
             {
                 for (int row = 0; row < RowLength; row++)
@@ -133,11 +144,14 @@ namespace GameOfLifeW8
                 }
 
                 await Task.Delay(100);
-                
+
                 if (GenerationComputed != null)
                 {
                     GenerationComputed();
                 }
+
+                GameOfLifeGrid = _nextGameOfLifeGrid;
+                InitializeToFalse(_nextGameOfLifeGrid);
             }
         }
 
@@ -157,19 +171,11 @@ namespace GameOfLifeW8
                 {
                     for (int j = column - 1; j <= column + 1; j++)
                     {
-                        // ancien test
-                        // SI la cellule n'est PAS à la même colonne ET
-                        // SI la cellule n'est PAS à la même ligne ET
-                        // Si la cellule est valide
-                        //if (i != row && j != column && IsValid(i, j))
-
-
-                        // nouveau test
                         // SI la cellule (N'EST PAS A LA MÊME COLONNE ET LA MÊME LIGNE) ET
                         // SI la cellule est valide
-                        if(!(i == row && j == column) && IsValid(i, j))
+                        if (!(i == row && j == column) && IsValid(i, j))
                         {
-                            if (CellTab[i, j] == true) { surroundingPopulation++; }
+                            if (GameOfLifeGrid[i, j] == true) { surroundingPopulation++; }
                         }
                     }
                 }
@@ -180,22 +186,23 @@ namespace GameOfLifeW8
                 throw new IndexOutOfRangeException("Invalid Range Values.\n" + ex.ToString());
             }
 
-            if (CellTab[column, row])
+            //if (CellTab[column, row])
+            //{
+            if (surroundingPopulation <= 1 || surroundingPopulation > 3)
             {
-                if (surroundingPopulation <= 1 || surroundingPopulation > 3)
-                    CellTab[column, row] = false;
+                _nextGameOfLifeGrid[column, row] = false;
             }
             else
             {
-                if (surroundingPopulation == 3) // Test nécessaire ???
-                    CellTab[column, row] = true;
+                //if (surroundingPopulation == 3) // Test nécessaire ???
+                _nextGameOfLifeGrid[column, row] = true;
             }
         }
 
         private bool IsValid(int row, int column)
         {
             return row >= 0 && column >= 0 &&
-                row < RowLength - 1 && column < ColumnLength - 1;
+                row < RowLength && column < ColumnLength;
         }
 
         #region INotifyPropertyChanged Membres
