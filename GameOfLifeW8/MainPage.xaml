@@ -8,11 +8,13 @@
     xmlns:myControls="using:GameOfLifeW8"
     mc:Ignorable="d">
     <Page.Resources>
-        <Style TargetType="TextBlock">
+        <Style TargetType="TextBlock" x:Key="tbBase">
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource tbBase}">
+            <Setter Property="FontSize" Value="16" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -31,16 +33,21 @@
         <Style TargetType="myControls:Cell">
             <Setter Property="Margin" Value="3" />
         </Style>
+        <Style TargetType="TextBlock" x:Key="tbGenerations" BasedOn="{StaticResource tbBase}">
+            <Setter Property="FontSize" Value="24" />
+        </Style>
     </Page.Resources>
 
-    <Grid Background="LightGray">
-        <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <myControls:Cell x:Name="myCell" VerticalAlignment="Center"/>
-            <Button x:Name="btnKillCell" Content="Kill" Click="btnKillCell_Click" Foreground="White" Background="DarkRed" />
-            <Button x:Name="btnReanimateCell" Content="Reanimate" Click="btnReanimateCell_Click" Foreground="White" Background="DarkRed" />
-        </StackPanel>-->
-        <Grid x:Name="grdControls" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="DarkGray">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="UsableSpace" Grid.Row="0">
+            <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+        <Grid x:Name="grdControls" Height="50" Grid.Row="1"
+              VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="#333">
             <StackPanel x:Name="spControls" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock x:Name="tbRows" Text="Number of Rows :" />
                 <TextBox x:Name="tbxRows" />
@@ -50,6 +57,8 @@
                 <Button x:Name="btnGameStart" Content="Start !" Visibility="Collapsed" Click="btnGameStart_Click" />
                 <Button x:Name="btnGameStop" Content="Stop" Visibility="Collapsed" Click="btnGameStop_Click" />
                 <Button x:Name="btnReset" Content="Reset" Visibility="Collapsed" Click="btnReset_Click" />
+                <TextBlock x:Name="tbGenerationsLabel" Text="Generations :" Visibility="Collapsed" />
+                <TextBlock x:Name="tbGenerations" Text="" Visibility="Collapsed" Style="{StaticResource tbGenerations}" />
             </StackPanel>
         </Grid>
     </Grid>

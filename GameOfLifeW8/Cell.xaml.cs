@@ -18,17 +18,27 @@ namespace GameOfLifeW8
 {
     public sealed partial class Cell : UserControl
     {
+        #region Properties
+
         public bool alive { get; private set; }
         public int row { get; private set; }
         public int column { get; private set; }
 
-        public Cell(int posX, int posY)
+        #endregion
+
+        #region Constructor
+
+        public Cell(int row, int column)
         {
-            this.row = posX;
-            this.column = posY;
+            this.row = row;
+            this.column = column;
             this.alive = false;
             this.InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         public void Live()
         {
@@ -41,5 +51,7 @@ namespace GameOfLifeW8
             this.alive = false;
             VisualStateManager.GoToState(this, "Dead", true);
         }
+
+        #endregion
     }
 }

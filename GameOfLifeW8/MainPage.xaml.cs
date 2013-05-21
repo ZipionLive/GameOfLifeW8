@@ -21,13 +21,46 @@ namespace GameOfLifeW8
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
         Game game;
         List<Cell> cells;
+        int maxRows;
+        int maxColumns;
+        
+        #endregion
+
+        #region Constructor
 
         public MainPage()
         {
             this.InitializeComponent();
             cells = new List<Cell>();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Generate(int rows, int columns)
+        {
+            // Clear any preexisting grid
+            game = null;
+            spGlobal.Children.Clear();
+
+            // Generate new grid
+            game = new Game(columns, rows);
+            GenerateCells(rows, columns);
+
+            // Display control buttons
+            btnGameStart.Visibility = Visibility.Visible;
+            btnGameStop.Visibility = Visibility.Visible;
+            btnReset.Visibility = Visibility.Visible;
+            tbGenerationsLabel.Visibility = Visibility.Visible;
+            tbGenerations.Visibility = Visibility.Visible;
+
+            // Register to the GenerationComputed event
+            game.GenerationComputed += GenerationComputedHandler;
         }
 
         private void GenerateCells(int rows, int columns)
@@ -39,18 +72,13 @@ namespace GameOfLifeW8
 
                 for (int column = 0; column < columns; column++)
                 {
-                    Cell cell = new Cell(column, row);
+                    Cell cell = new Cell(row, column);
                     spRow.Children.Add(cell);
                     cells.Add(cell);
                 }
 
                 spGlobal.Children.Add(spRow);
             }
-        }
-
-        private void GenerationComputedHandler()
-        {
-            RefreshCells();
         }
 
         public void RefreshCells()
@@ -74,38 +102,64 @@ namespace GameOfLifeW8
             }
         }
 
-        /// <summary>
-        /// Invoqué lorsque cette page est sur le point d'être affichée dans un frame.
-        /// </summary>
-        /// <param name="e">Données d'événement décrivant la manière dont l'utilisateur a accédé à cette page. La propriété Parameter
-        /// est généralement utilisée pour configurer la page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
+        #endregion
+
+        #region Click Handlers
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
+            maxRows = (int)UsableSpace.ActualHeight / 29;
+            maxColumns = (int)UsableSpace.ActualWidth / 30;
+
             int columns;
             int rows;
-            if (int.TryParse(tbxColumns.Text, out columns) && int.TryParse(tbxRows.Text, out rows))
+            bool canGenerate = true;
+
+            if (tbxRows.Text == String.Empty)
+                rows = maxRows;
+            else
             {
-                if (columns <= 50 && rows <= 30 && columns > 0 && rows > 0)
+                if (int.TryParse(tbxRows.Text, out rows))
                 {
-                    game = new Game(columns, rows);
-                    GenerateCells(rows, columns);
-                    btnGameStart.Visibility = Visibility.Visible;
-                    btnGameStop.Visibility = Visibility.Visible;
-                    btnReset.Visibility = Visibility.Visible;
-                    game.GenerationComputed += GenerationComputedHandler;
+                    if (rows > 0 && rows <= maxRows)
+                    { /* Nothing to do here*/ }
+                    else
+                    {
+                        tbxRows.Text = "Bad Value";
+                        canGenerate = false;
+                    }
                 }
                 else
                 {
-                    throw new InvalidCastException("Bad Values !");
+                    tbxRows.Text = "Bad Value";
+                    canGenerate = false;
                 }
             }
+
+            if (tbxColumns.Text == String.Empty)
+                columns = maxColumns;
             else
             {
-                throw new InvalidCastException("Bad Values !");
+                if (int.TryParse(tbxColumns.Text, out columns))
+                {
+                    if (columns > 0 && columns <= maxColumns)
+                    { /* Nothing to do here*/ }
+                    else
+                    {
+                        tbxRows.Text = "Bad Value";
+                        canGenerate = false;
+                    }
+                }
+                else
+                {
+                    tbxRows.Text = "Bad Value";
+                    canGenerate = false;
+                }
+            }
+
+            if (canGenerate)
+            {
+                Generate(rows, columns);
             }
         }
 
@@ -121,19 +175,28 @@ namespace GameOfLifeW8
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            game.Reset();
         }
 
-        #region CellTest
-        //private void btnKillCell_Click(object sender, RoutedEventArgs e)
-        //{
-        //    myCell.Die();
-        //}
+        #endregion
 
-        //private void btnReanimateCell_Click(object sender, RoutedEventArgs e)
-        //{
-        //    myCell.Live();
-        //}
+        #region Event Handlers
+
+        private void GenerationComputedHandler()
+        {
+            RefreshCells();
+            tbGenerations.Text = game.Generations.ToString();
+        }
+
+        /// <summary>
+        /// Invoqué lorsque cette page est sur le point d'être affichée dans un frame.
+        /// </summary>
+        /// <param name="e">Données d'événement décrivant la manière dont l'utilisateur a accédé à cette page. La propriété Parameter
+        /// est généralement utilisée pour configurer la page.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+        }
+
         #endregion
     }
 }
