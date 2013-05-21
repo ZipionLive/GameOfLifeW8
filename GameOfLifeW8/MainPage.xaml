@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="GameOfLifeW8.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GameOfLifeW8"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myControls="using:GameOfLifeW8"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="75" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="#FFCC0033" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style TargetType="myControls:Cell">
+            <Setter Property="Margin" Value="3" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="LightGray">
+        <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <myControls:Cell x:Name="myCell" VerticalAlignment="Center"/>
+            <Button x:Name="btnKillCell" Content="Kill" Click="btnKillCell_Click" Foreground="White" Background="DarkRed" />
+            <Button x:Name="btnReanimateCell" Content="Reanimate" Click="btnReanimateCell_Click" Foreground="White" Background="DarkRed" />
+        </StackPanel>-->
+        <Grid x:Name="grdControls" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="DarkGray">
+            <StackPanel x:Name="spControls" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock x:Name="tbRows" Text="Number of Rows :" />
+                <TextBox x:Name="tbxRows" />
+                <TextBlock x:Name="tbColumns" Text="Number of Columns :" />
+                <TextBox x:Name="tbxColumns" />
+                <Button x:Name="btnGenerate" Content="Generate Cells !" Click="btnGenerate_Click" />
+                <Button x:Name="btnGameStart" Content="Start !" Visibility="Collapsed" Click="btnGameStart_Click" />
+                <Button x:Name="btnGameStop" Content="Stop" Visibility="Collapsed" Click="btnGameStop_Click" />
+                <Button x:Name="btnReset" Content="Reset" Visibility="Collapsed" Click="btnReset_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
