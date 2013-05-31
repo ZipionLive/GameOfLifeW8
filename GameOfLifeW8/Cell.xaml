@@ -22,7 +22,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid x:Name="CellBase" PointerEntered="CellBase_PointerEntered" PointerPressed="CellBase_PointerPressed">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
                 <VisualState x:Name="Alive">

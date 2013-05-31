@@ -123,6 +123,11 @@
     <None Include="GameOfLifeW8_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\GOL.png" />
+    <Content Include="Assets\GOL_Logo.png" />
+    <Content Include="Assets\GOL_LogoLarge.png" />
+    <Content Include="Assets\GOL_LogoSmall.png" />
+    <Content Include="Assets\GOL_Logo_medium.png" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />

@@ -160,7 +160,7 @@ namespace GameOfLifeW8
         {
             while (IsRunning)
             {
-                await Task.Delay(200);
+                await Task.Delay(100);
 
                 for (int row = 0; row < RowLength; row++)
                 {
@@ -237,6 +237,18 @@ namespace GameOfLifeW8
         {
             return row >= 0 && column >= 0 &&
                 row < RowLength && column < ColumnLength;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        public void CellTouchedHandler(int row, int column)
+        {
+            if (GameOfLifeGrid[row, column])
+                GameOfLifeGrid[row, column] = false;
+            else
+                GameOfLifeGrid[row, column] = true;
         }
 
         #endregion

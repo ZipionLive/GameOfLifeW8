@@ -23,13 +23,6 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="FontSize" Value="16" />
         </Style>
-        <Style TargetType="Button">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Background" Value="#FFCC0033" />
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
         <Style TargetType="myControls:Cell">
             <Setter Property="Margin" Value="3" />
         </Style>
@@ -43,7 +36,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="85" />
         </Grid.RowDefinitions>
-        <Grid x:Name="UsableSpace" Grid.Row="0">
+        <Grid x:Name="UsableSpace" Grid.Row="0"
+              PointerPressed="UsableSpace_PointerPressed"
+              PointerReleased="UsableSpace_PointerReleasedOrLost"
+              PointerCaptureLost="UsableSpace_PointerReleasedOrLost">
             <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
         <Grid x:Name="grdControls" Height="85" Grid.Row="1"

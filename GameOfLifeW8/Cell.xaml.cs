@@ -18,11 +18,19 @@ namespace GameOfLifeW8
 {
     public sealed partial class Cell : UserControl
     {
+        #region Events
+
+        public delegate void DelegateCellTouched(int row, int column);
+        public event DelegateCellTouched CellTouched;
+
+        #endregion
+
         #region Properties
 
         public bool alive { get; private set; }
         public int row { get; private set; }
         public int column { get; private set; }
+        private bool isPointerPressed { get; set; }
 
         #endregion
 
@@ -50,6 +58,47 @@ namespace GameOfLifeW8
         {
             this.alive = false;
             VisualStateManager.GoToState(this, "Dead", true);
+        }
+
+        public void Toggle()
+        {
+            if (this.alive)
+                this.Die();
+            else
+                this.Live();
+        }
+
+        #endregion
+
+        #region EventHandlers
+
+        private void CellBase_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            if (isPointerPressed)
+            {
+                if (CellTouched != null)
+                    CellTouched(this.row, this.column);
+
+                this.Toggle();
+            }
+        }
+
+        private void CellBase_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (CellTouched != null)
+                CellTouched(this.row, this.column);
+
+            this.Toggle();
+        }
+
+        public void GridPointerPressedHandler()
+        {
+            isPointerPressed = true;
+        }
+
+        public void GridPointerReleasedOrLostHandler()
+        {
+            isPointerPressed = false;
         }
 
         #endregion

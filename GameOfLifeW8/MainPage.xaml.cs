@@ -21,6 +21,14 @@ namespace GameOfLifeW8
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Events
+
+        public delegate void DelegateGridPointerPressed();
+        public delegate void DelegateGridPointerReleasedOrLost();
+        public event DelegateGridPointerPressed GridPointerPressed;
+        public event DelegateGridPointerReleasedOrLost GridPointerReleasedOrLost;
+        #endregion
+
         #region Fields
 
         Game game;
@@ -77,6 +85,10 @@ namespace GameOfLifeW8
                     spRow.Children.Add(cell);
                     cells.Add(cell);
                     cell.Die();
+
+                    cell.CellTouched += game.CellTouchedHandler;
+                    GridPointerPressed += cell.GridPointerPressedHandler;
+                    GridPointerReleasedOrLost += cell.GridPointerReleasedOrLostHandler;
                 }
 
                 spGlobal.Children.Add(spRow);
@@ -87,32 +99,28 @@ namespace GameOfLifeW8
         {
             foreach (Cell cell in cells)
             {
-                //if (cell.alive)
-                //{
-                //    if (game.GameOfLifeGrid[cell.row, cell.column] == false)
-                //    {
-                //        cell.Die();
-                //    }
-                //}
-                //else if (!cell.alive)
-                //{
-                //    if (game.GameOfLifeGrid[cell.row, cell.column] == true)
-                //    {
-                //        cell.Live();
-                //    }
-                //}
                 bool isAlive = game.GameOfLifeGrid[cell.row, cell.column];
 
-                if (isAlive)
-                    cell.Live();
-                else
-                    cell.Die();
+                if (cell.alive)
+                {
+                    if (!isAlive)
+                    {
+                        cell.Die();
+                    }
+                }
+                else if (!cell.alive)
+                {
+                    if (isAlive)
+                    {
+                        cell.Live();
+                    }
+                }
             }
         }
 
         #endregion
 
-        #region Click Handlers
+        #region User Interaction Handlers
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
@@ -188,6 +196,18 @@ namespace GameOfLifeW8
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
             game.Reset();
+        }
+
+        private void UsableSpace_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (GridPointerPressed != null)
+                GridPointerPressed();
+        }
+
+        private void UsableSpace_PointerReleasedOrLost(object sender, PointerRoutedEventArgs e)
+        {
+            if (GridPointerReleasedOrLost != null)
+                GridPointerReleasedOrLost();
         }
 
         #endregion

@@ -1,39 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-
-  <Identity Name="73ae50ed-5ee1-4cf1-afff-1170a9d41a2c"
-            Publisher="CN=Alexandre"
-            Version="1.0.0.0" />
-
+  <Identity Name="73ae50ed-5ee1-4cf1-afff-1170a9d41a2c" Publisher="CN=Alexandre" Version="1.0.0.0" />
   <Properties>
     <DisplayName>GameOfLifeW8</DisplayName>
     <PublisherDisplayName>Alexandre</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\GOL_Logo_medium.png</Logo>
   </Properties>
-
   <Prerequisites>
     <OSMinVersion>6.2.1</OSMinVersion>
     <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
   </Prerequisites>
-
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="x-generate" />
   </Resources>
-
   <Applications>
-    <Application Id="App"
-        Executable="$targetnametoken$.exe"
-        EntryPoint="GameOfLifeW8.App">
-        <VisualElements
-            DisplayName="GameOfLifeW8"
-            Logo="Assets\Logo.png"
-            SmallLogo="Assets\SmallLogo.png"
-            Description="GameOfLifeW8"
-            ForegroundText="light"
-            BackgroundColor="#464646">
-            <DefaultTile ShowName="allLogos" />
-            <SplashScreen Image="Assets\SplashScreen.png" />
-        </VisualElements>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GameOfLifeW8.App">
+      <VisualElements DisplayName="Game of Life for Windows 8" Logo="Assets\GOL_Logo.png" SmallLogo="Assets\GOL_LogoSmall.png" Description="An implementation of John Conway's famous cellular automaton in Windows 8" ForegroundText="light" BackgroundColor="#FFFFFF">
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\GOL_LogoLarge.png" ShortName="Game of Life" />
+        <SplashScreen Image="Assets\GOL.png" BackgroundColor="#FFFFFF" />
+        <InitialRotationPreference>
+          <Rotation Preference="landscape" />
+        </InitialRotationPreference>
+      </VisualElements>
     </Application>
   </Applications>
   <Capabilities>
