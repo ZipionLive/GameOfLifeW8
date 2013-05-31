@@ -53,12 +53,11 @@ namespace GameOfLifeW8
             GenerateCells(rows, columns);
             RefreshCells();
 
-            // Register to the GenerationComputed event
+            // Register to the game events
             game.GenerationComputed += GenerationComputedHandler;
 
             // Display control buttons
             btnGameStart.Visibility = Visibility.Visible;
-            btnGameStop.Visibility = Visibility.Visible;
             btnReset.Visibility = Visibility.Visible;
             tbGenerationsLabel.Visibility = Visibility.Visible;
             tbGenerations.Visibility = Visibility.Visible;
@@ -90,14 +89,14 @@ namespace GameOfLifeW8
             {
                 if (cell.alive)
                 {
-                    if (!game.GameOfLifeGrid[cell.row, cell.column])
+                    if (game.GameOfLifeGrid[cell.row, cell.column] == false)
                     {
                         cell.Die();
                     }
                 }
                 else if (!cell.alive)
                 {
-                    if (game.GameOfLifeGrid[cell.row, cell.column])
+                    if (game.GameOfLifeGrid[cell.row, cell.column] == true)
                     {
                         cell.Live();
                     }
@@ -169,11 +168,15 @@ namespace GameOfLifeW8
         private void btnGameStart_Click(object sender, RoutedEventArgs e)
         {
             game.Start();
+            btnGameStart.Visibility = Visibility.Collapsed;
+            btnGamePause.Visibility = Visibility.Visible;
         }
 
-        private void btnGameStop_Click(object sender, RoutedEventArgs e)
+        private void btnGamePause_Click(object sender, RoutedEventArgs e)
         {
-            game.Stop();
+            game.Pause();
+            btnGamePause.Visibility = Visibility.Collapsed;
+            btnGameStart.Visibility = Visibility.Visible;
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)

@@ -111,14 +111,14 @@ namespace GameOfLifeW8
         /// <summary>
         /// Stops the logic business
         /// </summary>
-        public void Stop()
+        public void Pause()
         {
             this.IsRunning = false;
         }
 
         public void Reset()
         {
-            Stop();
+            Pause();
             InitializeToFalse(GameOfLifeGrid);
             InitializeToFalse(_nextGameOfLifeGrid);
 
@@ -139,6 +139,8 @@ namespace GameOfLifeW8
                     GameOfLifeGrid[row, column] = false;
                 }
             }
+
+            Generations = 0;
         }
 
         private void InitializeGlider(bool[,] GameOfLifeGrid)
@@ -158,7 +160,7 @@ namespace GameOfLifeW8
         {
             while (IsRunning)
             {
-                await Task.Delay(100);
+                await Task.Delay(200);
 
                 for (int row = 0; row < RowLength; row++)
                 {
@@ -168,10 +170,12 @@ namespace GameOfLifeW8
                     }
                 }
 
-                Generations++;
-
-                GameOfLifeGrid = CopyGrid(_nextGameOfLifeGrid);
-                RaisePropertyChanged("GameOfLifeGrid");
+                if (IsRunning)
+                {
+                    Generations++;
+                    GameOfLifeGrid = CopyGrid(_nextGameOfLifeGrid);
+                    RaisePropertyChanged("GameOfLifeGrid");
+                }
             }
         }
 

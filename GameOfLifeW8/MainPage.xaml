@@ -41,22 +41,28 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="85" />
         </Grid.RowDefinitions>
         <Grid x:Name="UsableSpace" Grid.Row="0">
             <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
-        <Grid x:Name="grdControls" Height="50" Grid.Row="1"
+        <Grid x:Name="grdControls" Height="85" Grid.Row="1"
               VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="#333">
-            <StackPanel x:Name="spControls" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="spControls" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0">
                 <TextBlock x:Name="tbRows" Text="Number of Rows :" />
                 <TextBox x:Name="tbxRows" />
                 <TextBlock x:Name="tbColumns" Text="Number of Columns :" />
                 <TextBox x:Name="tbxColumns" />
-                <Button x:Name="btnGenerate" Content="Generate Cells !" Click="btnGenerate_Click" />
-                <Button x:Name="btnGameStart" Content="Start !" Visibility="Collapsed" Click="btnGameStart_Click" />
-                <Button x:Name="btnGameStop" Content="Stop" Visibility="Collapsed" Click="btnGameStop_Click" />
-                <Button x:Name="btnReset" Content="Reset" Visibility="Collapsed" Click="btnReset_Click" />
+                <Button x:Name="btnGenerate" Style="{StaticResource GenerateAppBarButtonStyle}" Click="btnGenerate_Click" />
+                <Button x:Name="btnGameStart" Style="{StaticResource PlayAppBarButtonStyle}" Visibility="Collapsed" Click="btnGameStart_Click" />
+                <Button x:Name="btnGamePause" Style="{StaticResource PauseAppBarButtonStyle}" Visibility="Collapsed" Click="btnGamePause_Click" />
+                <Button x:Name="btnReset" Style="{StaticResource RedoAppBarButtonStyle}" Visibility="Collapsed" Click="btnReset_Click" />
+            </StackPanel>
+            <StackPanel x:Name="spGenerations" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
                 <TextBlock x:Name="tbGenerationsLabel" Text="Generations :" Visibility="Collapsed" />
                 <TextBlock x:Name="tbGenerations" Text="" Visibility="Collapsed" Style="{StaticResource tbGenerations}" />
             </StackPanel>
