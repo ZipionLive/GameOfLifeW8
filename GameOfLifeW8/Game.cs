@@ -213,13 +213,13 @@ namespace GameOfLifeW8
 
             catch (IndexOutOfRangeException ex)
             {
-                throw new IndexOutOfRangeException("Invalid Range Values.\n" + ex.ToString());
+                throw new IndexOutOfRangeException("Invalid Range Values.\n" + ex.ToString()); // Should never be called, thanks to the IsValid method
             }
 
             // Applying the game rules !
             if (GameOfLifeGrid[row, column]) // Rules for living cells
             {
-                if (surroundingPopulation > 1 || surroundingPopulation < 4)
+                if (surroundingPopulation > 1 && surroundingPopulation < 4)
                     _nextGameOfLifeGrid[row, column] = true; // Ah ah ah ah stayin' alive ! Stayin' alive !
                 else
                     _nextGameOfLifeGrid[row, column] = false; // Cells hate crowds

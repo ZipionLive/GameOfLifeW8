@@ -87,20 +87,26 @@ namespace GameOfLifeW8
         {
             foreach (Cell cell in cells)
             {
-                if (cell.alive)
-                {
-                    if (game.GameOfLifeGrid[cell.row, cell.column] == false)
-                    {
-                        cell.Die();
-                    }
-                }
-                else if (!cell.alive)
-                {
-                    if (game.GameOfLifeGrid[cell.row, cell.column] == true)
-                    {
-                        cell.Live();
-                    }
-                }
+                //if (cell.alive)
+                //{
+                //    if (game.GameOfLifeGrid[cell.row, cell.column] == false)
+                //    {
+                //        cell.Die();
+                //    }
+                //}
+                //else if (!cell.alive)
+                //{
+                //    if (game.GameOfLifeGrid[cell.row, cell.column] == true)
+                //    {
+                //        cell.Live();
+                //    }
+                //}
+                bool isAlive = game.GameOfLifeGrid[cell.row, cell.column];
+
+                if (isAlive)
+                    cell.Live();
+                else
+                    cell.Die();
             }
         }
 
