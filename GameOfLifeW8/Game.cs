@@ -39,7 +39,6 @@ namespace GameOfLifeW8
                 if (_gameOfLifeGrid != value)
                 {
                     _gameOfLifeGrid = value;
-                    RaisePropertyChanged("CellTab");
                 }
             }
         }
@@ -75,18 +74,20 @@ namespace GameOfLifeW8
 
         #region Constructor
 
-        public Game(int tabLength, int tabHeight)
+        public Game(int rows, int columns)
         {
             // Instantiation du tableau selon les coordonnées demandées
-            GameOfLifeGrid = new bool[tabLength, tabHeight];
-            _nextGameOfLifeGrid = new bool[tabLength, tabHeight];
+            GameOfLifeGrid = new bool[rows, columns];
+            _nextGameOfLifeGrid = new bool[rows, columns];
             Generations = 0;
 
             InitializeToFalse(GameOfLifeGrid);
             InitializeToFalse(_nextGameOfLifeGrid);
 
             InitializeGlider(GameOfLifeGrid);
-            RaisePropertyChanged("CellTab");
+
+            PropertyChanged += PropertyChangedHandler;
+            RaisePropertyChanged("GameOfLifeGrid");
 
             if (GenerationComputed != null)
             {
@@ -163,16 +164,14 @@ namespace GameOfLifeW8
                 {
                     for (int column = 0; column < ColumnLength; column++)
                     {
-                        CheckCellAndPlay(column, row);
+                        CheckCellAndPlay(row, column);
                     }
                 }
 
                 Generations++;
 
-                if (GenerationComputed != null)
-                    GenerationComputed();
-
                 GameOfLifeGrid = CopyGrid(_nextGameOfLifeGrid);
+                RaisePropertyChanged("GameOfLifeGrid");
             }
         }
 
@@ -189,7 +188,7 @@ namespace GameOfLifeW8
             return NewGrid;
         }
 
-        private void CheckCellAndPlay(int column, int row)
+        private void CheckCellAndPlay(int row, int column)
         {
             int surroundingPopulation = 0;
 
@@ -214,19 +213,19 @@ namespace GameOfLifeW8
             }
 
             // Applying the game rules !
-            if (GameOfLifeGrid[column, row]) // Rules for living cells
+            if (GameOfLifeGrid[row, column]) // Rules for living cells
             {
                 if (surroundingPopulation > 1 || surroundingPopulation < 4)
-                    _nextGameOfLifeGrid[column, row] = true; // Ah ah ah ah stayin' alive ! Stayin' alive !
+                    _nextGameOfLifeGrid[row, column] = true; // Ah ah ah ah stayin' alive ! Stayin' alive !
                 else
-                    _nextGameOfLifeGrid[column, row] = false; // Cells hate crowds
+                    _nextGameOfLifeGrid[row, column] = false; // Cells hate crowds
             }
             else // Rules for dead cells
             {
                 if (surroundingPopulation == 3)
-                    _nextGameOfLifeGrid[column, row] = true; // Repopulate ! Orgy time !
+                    _nextGameOfLifeGrid[row, column] = true; // Repopulate ! Orgy time !
                 else
-                    _nextGameOfLifeGrid[column, row] = false; // No zombies allowed, please stay dead.
+                    _nextGameOfLifeGrid[row, column] = false; // No zombies allowed, please stay dead.
             }
         }
 
@@ -247,6 +246,15 @@ namespace GameOfLifeW8
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        protected void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "GameOfLifeGrid")
+            {
+                if (GenerationComputed != null)
+                    GenerationComputed();
             }
         }
 

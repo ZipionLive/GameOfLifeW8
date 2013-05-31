@@ -49,8 +49,12 @@ namespace GameOfLifeW8
             spGlobal.Children.Clear();
 
             // Generate new grid
-            game = new Game(columns, rows);
+            game = new Game(rows, columns);
             GenerateCells(rows, columns);
+            RefreshCells();
+
+            // Register to the GenerationComputed event
+            game.GenerationComputed += GenerationComputedHandler;
 
             // Display control buttons
             btnGameStart.Visibility = Visibility.Visible;
@@ -59,8 +63,6 @@ namespace GameOfLifeW8
             tbGenerationsLabel.Visibility = Visibility.Visible;
             tbGenerations.Visibility = Visibility.Visible;
 
-            // Register to the GenerationComputed event
-            game.GenerationComputed += GenerationComputedHandler;
         }
 
         private void GenerateCells(int rows, int columns)
@@ -75,6 +77,7 @@ namespace GameOfLifeW8
                     Cell cell = new Cell(row, column);
                     spRow.Children.Add(cell);
                     cells.Add(cell);
+                    cell.Die();
                 }
 
                 spGlobal.Children.Add(spRow);
@@ -92,7 +95,7 @@ namespace GameOfLifeW8
                         cell.Die();
                     }
                 }
-                else
+                else if (!cell.alive)
                 {
                     if (game.GameOfLifeGrid[cell.row, cell.column])
                     {
@@ -182,7 +185,7 @@ namespace GameOfLifeW8
 
         #region Event Handlers
 
-        private void GenerationComputedHandler()
+        public void GenerationComputedHandler()
         {
             RefreshCells();
             tbGenerations.Text = game.Generations.ToString();
