@@ -35,7 +35,7 @@
                 </VisualState>
                 <VisualState x:Name="Dead">
                     <Storyboard>
-                    	<ColorAnimation Duration="0" To="#FF323232" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="CellBody" d:IsOptimized="True"/>
+                    	<ColorAnimation Duration="0" To="#FFCCCCCC" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="CellBody" d:IsOptimized="True"/>
                     	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="CellBody">
                     		<DiscreteObjectKeyFrame KeyTime="0">
                     			<DiscreteObjectKeyFrame.Value>

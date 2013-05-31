@@ -43,7 +43,7 @@
             <StackPanel x:Name="spGlobal" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
         <Grid x:Name="grdControls" Height="85" Grid.Row="1"
-              VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="#333">
+              VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="#323232">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="300" />

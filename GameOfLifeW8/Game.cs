@@ -84,8 +84,6 @@ namespace GameOfLifeW8
             InitializeToFalse(GameOfLifeGrid);
             InitializeToFalse(_nextGameOfLifeGrid);
 
-            InitializeGlider(GameOfLifeGrid);
-
             PropertyChanged += PropertyChangedHandler;
             RaisePropertyChanged("GameOfLifeGrid");
 
@@ -141,15 +139,6 @@ namespace GameOfLifeW8
             }
 
             Generations = 0;
-        }
-
-        private void InitializeGlider(bool[,] GameOfLifeGrid)
-        {
-            GameOfLifeGrid[0, 1] = true;
-            GameOfLifeGrid[1, 2] = true;
-            GameOfLifeGrid[2, 0] = true;
-            GameOfLifeGrid[2, 1] = true;
-            GameOfLifeGrid[2, 2] = true;
         }
 
         #endregion
@@ -277,6 +266,7 @@ namespace GameOfLifeW8
         #endregion
 
         #region Trash
+
         //public static Game Instance(int tabLength, int tabHeight) {
         //    get {
         //        if (instance == null) {
@@ -289,6 +279,16 @@ namespace GameOfLifeW8
 
         //    return instance;
         //}
+
+        //private void InitializeGlider(bool[,] GameOfLifeGrid)
+        //{
+        //    GameOfLifeGrid[0, 1] = true;
+        //    GameOfLifeGrid[1, 2] = true;
+        //    GameOfLifeGrid[2, 0] = true;
+        //    GameOfLifeGrid[2, 1] = true;
+        //    GameOfLifeGrid[2, 2] = true;
+        //}
+
         #endregion
     }
 }
